@@ -16,7 +16,6 @@ it('should be able to logout of the application', function () {
         ->call('logout')
         ->assertRedirect(route('login'));
 
-
     expect(auth())
         ->guest()
         ->toBeTrue();
