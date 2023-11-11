@@ -6,10 +6,13 @@ use App\Models\User;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use App\Notifications\PasswordRecoveryNotification;
+use Livewire\Attributes\Rule;
 
 class Recovery extends Component
 {
     public ?string $message = null;
+
+    #[Rule(['required', 'email'])]
     public ?string $email = null;
 
     public function render(): View
@@ -19,6 +22,8 @@ class Recovery extends Component
 
     public function startProcessRecovery(): void
     {
+        $this->validate();
+
         $user = User::where('email', $this->email)->first();
 
         $user?->notify(new PasswordRecoveryNotification);
