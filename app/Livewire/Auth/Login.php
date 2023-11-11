@@ -4,6 +4,7 @@ namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Layout;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\{Auth, RateLimiter};
 
@@ -12,10 +13,10 @@ class Login extends Component
     public ?string $email    = null;
     public ?string $password = null;
 
+    #[Layout('components.layouts.guest')]
     public function render(): View
     {
-        return view('livewire.auth.login')
-            ->layout('components.layouts.guest');
+        return view('livewire.auth.login');
     }
 
     public function tryToLogin(): void
