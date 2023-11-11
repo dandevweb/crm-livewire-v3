@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\PasswordRecoveryNotification;
 
 test('needs to have a route to password recovery', function () {
-    get(route('password.recovery'))
+    get(route('auth.password.recovery'))
+        ->assertSeeLivewire('auth.password.recovery')
         ->assertOk();
 });
 

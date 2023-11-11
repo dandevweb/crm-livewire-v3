@@ -19,6 +19,10 @@
         <x-form wire:submit="tryToLogin">
             <x-input label="Email" wire:model="email" />
             <x-input label="Password" wire:model="password" type="password" />
+            <div class="w-full text-right text-sm">
+                <a href="{{ route('password.recovery') }}" class="link-primary link">Forgot your
+                    password?</a>
+            </div>
             <x-slot:actions>
                 <div class="flex w-full items-center justify-between">
                     <a wire:navigate href="{{ route('auth.register') }}" class="link-primary link">I
