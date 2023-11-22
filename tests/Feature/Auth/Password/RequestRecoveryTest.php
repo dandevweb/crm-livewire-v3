@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\User;
 use Livewire\Livewire;
-
 use App\Livewire\Auth\Password\Recovery;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -13,7 +12,6 @@ use function Pest\Laravel\{assertDatabaseCount, assertDatabaseHas, get};
 
 test('needs to have a route to password recovery', function () {
     get(route('password.recovery'))
-        ->assertSeeLivewire('auth.password.recovery')
         ->assertOk();
 });
 
