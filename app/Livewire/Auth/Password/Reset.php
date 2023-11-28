@@ -7,12 +7,17 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\{DB, Hash, Password};
+use Livewire\Attributes\Rule;
 
 class Reset extends Component
 {
-    public ?string $token                 = null;
-    public ?string $email                 = null;
-    public ?string $email_confirmation    = null;
+    public ?string $token = null;
+
+    #[Rule(['required', 'email', 'confirmed'])]
+    public ?string $email              = null;
+    public ?string $email_confirmation = null;
+
+    #[Rule(['required', 'confirmed'])]
     public ?string $password              = null;
     public ?string $password_confirmation = null;
 
@@ -36,6 +41,7 @@ class Reset extends Component
 
     public function updatePassword(): void
     {
+        $this->validate();
         $status = Password::reset(
             [
                 'token'                 => $this->token,
