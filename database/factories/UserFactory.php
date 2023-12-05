@@ -38,4 +38,11 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    public function withPermission(string $key): static
+    {
+        return $this->afterCreating(function ($user) use ($key) {
+            $user->givePermissionTo($key);
+        });
+    }
 }
