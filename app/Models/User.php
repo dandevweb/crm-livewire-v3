@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -44,4 +45,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password'          => 'hashed',
     ];
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function givePermissionTo(string $key): void
+    {
+        $this->permissions()->firstOrCreate(compact('key'));
+    }
+
+    public function hasPermissionTo(string $key): bool
+    {
+        return $this->permissions()->where(compact('key'))->exists();
+    }
 }
