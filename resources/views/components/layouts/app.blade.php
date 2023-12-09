@@ -1,3 +1,5 @@
+@use('App\Enums\Can')
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -11,13 +13,13 @@
 
 <body class="min-h-screen font-sans antialiased">
     <x-main full-width>
-        <x-slot:sidebar drawer="main-drawer" collapsible class="bg-sky-800 pt-3 text-white">
+        <x-slot:sidebar drawer="main-drawer" collapsible class="pt-3 text-white bg-sky-800">
 
             {{-- Hidden when collapsed --}}
-            <div class="hidden-when-collapsed ml-5 text-4xl font-black text-yellow-500">mary</div>
+            <div class="ml-5 text-4xl font-black text-yellow-500 hidden-when-collapsed">mary</div>
 
             {{-- Display when collapsed --}}
-            <div class="display-when-collapsed ml-5 text-4xl font-black text-orange-500">m</div>
+            <div class="ml-5 text-4xl font-black text-orange-500 display-when-collapsed">m</div>
 
             {{-- Custom `active menu item background color` --}}
             <x-menu activate-by-route active-bg-color="bg-base-300/10">
@@ -40,6 +42,12 @@
                     <x-menu-item title="Wifi" icon="o-wifi" />
                     <x-menu-item title="Archives" icon="o-archive-box" />
                 </x-menu-sub>
+
+                @can(Can::BE_AN_ADMIN->value)
+                    <x-menu-sub title="Admin" icon="o-lock-closed">
+                        <x-menu-item title="Dashboard" icon="o-chart-bar-square" :link="route('admin.dashboard')" />
+                    </x-menu-sub>
+                @endcan
             </x-menu>
         </x-slot:sidebar>
 
