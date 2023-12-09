@@ -2,9 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
+use App\Enums\Can;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -39,10 +40,10 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function withPermission(string $key): static
+    public function withPermission(Can $key): static
     {
-        return $this->afterCreating(function ($user) use ($key) {
-            $user->givePermissionTo($key);
-        });
+        return $this->afterCreating(
+            fn ($user) => $user->givePermissionTo($key)
+        );
     }
 }

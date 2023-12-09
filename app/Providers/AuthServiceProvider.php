@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Enums\Can;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -14,6 +16,11 @@ class AuthServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Gate::define('be-an-admin', fn ($user) => $user->hasPermissionTo('be an admin'));
+        foreach (Can::cases() as $can) {
+            Gate::define(
+                str($can->value)->snake('-')->toString(),
+                fn (User $user) => $user->hasPermissionTo($can)
+            );
+        }
     }
 }
