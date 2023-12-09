@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\{Permission, User};
-
 use Illuminate\Support\Facades\{Cache, DB};
 use Database\Seeders\{PermissionSeeder, UserSeeder};
 
@@ -15,7 +14,7 @@ it('should be able to give an user a permission to do something', function () {
 
     expect($user)
         ->hasPermissionTo('be an admin')
-        ->toBeTrue();
+        ->toBeTrue('Checking if the user has the permission to be an admin');
 
     assertDatabaseHas('permissions', [
         'key' => 'be an admin',
@@ -23,7 +22,7 @@ it('should be able to give an user a permission to do something', function () {
 
     assertDatabaseHas('permission_user', [
         'user_id'       => $user->id,
-        'permission_id' => Permission::where('key', 'be an admin')->first()->id,
+        'permission_id' => Permission::where(['key' => 'be an admin'])->first()->id,
     ]);
 });
 
