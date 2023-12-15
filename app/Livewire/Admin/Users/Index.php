@@ -2,22 +2,39 @@
 
 namespace App\Livewire\Admin\Users;
 
+use App\Enum\Can;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
 use Illuminate\Contracts\View\View;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class Index extends Component
 {
+    public function mount(): void
+    {
+        $this->authorize(Can::BE_AN_ADMIN->value);
+    }
+
     public function render(): View
     {
         return view('livewire.admin.users.index');
     }
 
     #[Computed]
-    public function users(): LengthAwarePaginator
+    public function users(): Collection
     {
-        return User::paginate(10);
+        return User::all();
+    }
+
+    #[Computed]
+    public function headers(): array
+    {
+        return [
+            ['key' => 'id', 'label' => '#'],
+            ['key' => 'name', 'label' => 'Name'],
+            ['key' => 'email', 'label' => 'Email'],
+            ['key' => 'permissions', 'label' => 'Permissions'],
+        ];
     }
 }

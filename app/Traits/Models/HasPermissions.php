@@ -2,7 +2,7 @@
 
 namespace App\Traits\Models;
 
-use App\Enums\Can;
+use App\Enum\Can;
 use App\Models\Permission;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Collection;

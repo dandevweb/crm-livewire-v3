@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\Can;
+use App\Enum\Can;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 

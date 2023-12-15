@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\Can;
+use App\Enum\Can;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
