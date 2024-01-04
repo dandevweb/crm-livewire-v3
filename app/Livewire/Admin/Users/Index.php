@@ -38,7 +38,7 @@ class Index extends Component
                 $this->search_permissions,
                 fn (Builder $q) => $q->whereHas(
                     'permissions',
-                    fn (Builder $q) => $q->where('id', $this->search_permissions)
+                    fn (Builder $q) => $q->whereIn('id', $this->search_permissions)
                 )
             )
             ->get();

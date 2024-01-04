@@ -3,13 +3,14 @@
 
     <div class="mb-4 flex gap-4">
         <div class="w-1/3">
-            <x-input icon="o-magnifying-glass" wire:model.live="search"
-                placeholder="Seare by email or name" class="input-sm" />
+            <x-input label="Search" icon="o-magnifying-glass" wire:model.live="search"
+                placeholder="Seare by email or name" class="input-sm h-12" />
         </div>
 
-        <x-select>
-
-        </x-select>
+        <div class="w-1/3">
+            <x-choices label="Filter by permission" option-label="key"
+                wire:model.live="search_permissions" :options="$this->permissions" />
+        </div>
     </div>
 
     <x-table :headers="$this->headers" :rows="$this->users">
