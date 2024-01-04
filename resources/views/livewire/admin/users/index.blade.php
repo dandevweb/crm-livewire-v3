@@ -11,6 +11,11 @@
             <x-choices label="Filter by permission" option-label="key"
                 wire:model.live="search_permissions" :options="$this->permissions" />
         </div>
+
+        <div class="mt-8 w-1/3">
+            <x-checkbox label="Only Deleted Users" wire:model.live="search_trash"
+                class="checkbox-primary" right tight />
+        </div>
     </div>
 
     <x-table :headers="$this->headers" :rows="$this->users">
@@ -21,7 +26,12 @@
         @endscope
 
         @scope('actions', $user)
-            <x-button icon="o-trash" wire:click="delete({{ $user->id }})" spinner class="btn-sm" />
+            @unless ($user->trashed())
+                <x-button icon="o-trash" wire:click="delete({{ $user->id }})" spinner class="btn-sm" />
+            @else
+                <x-button icon="o-arrow-path" wire:click="restore({{ $user->id }})" spinner
+                    class="btn-success btn-ghost btn-sm" />
+            @endunless
         @endscope
     </x-table>
 </div>
