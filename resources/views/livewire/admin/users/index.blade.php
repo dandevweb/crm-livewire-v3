@@ -2,19 +2,28 @@
     <x-header title="Users" separator />
 
     <div class="mb-4 flex gap-4">
-        <div class="w-1/3">
+        <div class="w-1/4">
             <x-input label="Search" icon="o-magnifying-glass" wire:model.live="search"
                 placeholder="Seare by email or name" class="input-sm h-12" />
         </div>
 
-        <div class="w-1/3">
+        <div class="w-1/4">
             <x-choices label="Filter by permission" option-label="key"
                 wire:model.live="search_permissions" :options="$this->permissions" />
         </div>
 
-        <div class="mt-8 w-1/3">
+        <div class="mt-8 w-1/4">
             <x-checkbox label="Only Deleted Users" wire:model.live="search_trash"
                 class="checkbox-primary" right tight />
+        </div>
+
+        <div class="w-1/4">
+            <x-select wire:model.live="perPage" :options="[
+                ['id' => 5, 'name' => '5'],
+                ['id' => 15, 'name' => '15'],
+                ['id' => 25, 'name' => '25'],
+                ['id' => 50, 'name' => '50'],
+            ]" label="Records per page" />
         </div>
     </div>
 
@@ -46,4 +55,5 @@
             @endunless
         @endscope
     </x-table>
+    {{ $this->users->links() }}
 </div>

@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\{Builder, Collection};
 
 class Index extends Component
 {
+    use WithPagination;
+
     public ?string $search           = null;
     public array $search_permissions = [];
     public bool $search_trash        = false;
@@ -30,6 +32,12 @@ class Index extends Component
         return view('livewire.admin.users.index');
     }
 
+    public function updatedPerPage($value): void
+    {
+        $this->resetPage();
+    }
+
+
     #[Computed]
     public function users(): LengthAwarePaginator
     {
@@ -38,6 +46,7 @@ class Index extends Component
         ]);
 
         return User::query()
+            ->with('permissions')
             ->when($this->search, fn (Builder $q) => $q->where('name', 'like', "%{$this->search}%")
                 ->orWhere('email', 'like', "%{$this->search}%"))
             ->when(
