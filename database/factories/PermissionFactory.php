@@ -17,7 +17,7 @@ class PermissionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'key' => $this->faker->unique()->word(),
         ];
     }
 }

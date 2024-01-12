@@ -2,7 +2,7 @@
 
 namespace App\Traits\Models;
 
-use App\Enums\Can;
+use App\Enum\Can;
 use App\Models\Permission;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,7 +33,10 @@ trait HasPermissions
         $pKey = $key instanceof Can ? $key->value : $key;
 
         /** @var Collection $permissions */
-        $permissions = Cache::get($this->getPermissionCacheKey(), $this->permissions);
+        $permissions = Cache::get(
+            $this->getPermissionCacheKey(),
+            fn () => $this->permissions
+        );
 
         return $permissions
             ->where('key', '=', $pKey)

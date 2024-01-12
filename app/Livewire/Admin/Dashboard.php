@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Enums\Can;
+use App\Enum\Can;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\Models\HasPermissions;
 use Illuminate\Notifications\Notifiable;
@@ -14,6 +15,7 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
     use HasPermissions;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
