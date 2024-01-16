@@ -12,14 +12,17 @@
 </head>
 
 <body class="min-h-screen font-sans antialiased">
+    <x-toast />
     <x-main full-width>
-        <x-slot:sidebar drawer="main-drawer" collapsible class="bg-sky-800 pt-3 text-white">
+
+        {{-- The `$slot` goes here --}}
+        <x-slot:sidebar drawer="main-drawer" collapsible class="pt-3 text-white bg-sky-800">
 
             {{-- Hidden when collapsed --}}
-            <div class="hidden-when-collapsed ml-5 text-4xl font-black text-yellow-500">mary</div>
+            <div class="ml-5 text-4xl font-black text-yellow-500 hidden-when-collapsed">mary</div>
 
             {{-- Display when collapsed --}}
-            <div class="display-when-collapsed ml-5 text-4xl font-black text-orange-500">m</div>
+            <div class="ml-5 text-4xl font-black text-orange-500 display-when-collapsed">m</div>
 
             {{-- Custom `active menu item background color` --}}
             <x-menu activate-by-route active-bg-color="bg-base-300/10">
@@ -29,8 +32,9 @@
                     <x-list-item :item="$user" sub-value="username" no-separator no-hover
                         class="!-mx-2 mb-5 mt-2 border-y border-y-sky-900">
                         <x-slot:actions>
-
-                            <livewire:auth.logout />
+                            <div class="tooltip tooltip-left" data-tip="logoff">
+                                <livewire:auth.logout wire:key='logout' />
+                            </div>
                         </x-slot:actions>
                     </x-list-item>
                 @endif

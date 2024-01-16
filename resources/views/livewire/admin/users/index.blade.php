@@ -1,30 +1,24 @@
 <div>
     <x-header title="Users" separator />
 
-    <div class="mb-4 flex gap-4">
-        <div class="w-1/4">
-            <x-input label="Search" icon="o-magnifying-glass" wire:model.live="search"
-                placeholder="Seare by email or name" class="input-sm h-12" />
-        </div>
 
-        <div class="w-1/4">
-            <x-choices label="Filter by permission" option-label="key"
-                wire:model.live="search_permissions" :options="$this->permissions" />
+    <div class="flex mb-4 space-x-4">
+        <div class="w-1/3">
+            <x-input label="Search by email or name" icon="o-magnifying-glass"
+                wire:model.live="search" />
         </div>
+        <x-choices Label="Search by permissions" wire:model.live="search_permissions"
+            :options="$permissionsToSearch" option-label="key" search-function="filterPermissions" searchable
+            no-result-text="Nothing here" />
+        <x-checkbox label="Show Deleted Users" wire:model.live="search_trash"
+            class="checkbox-primary" right tight />
 
-        <div class="mt-8 w-1/4">
-            <x-checkbox label="Only Deleted Users" wire:model.live="search_trash"
-                class="checkbox-primary" right tight />
-        </div>
-
-        <div class="w-1/4">
-            <x-select wire:model.live="perPage" :options="[
-                ['id' => 5, 'name' => '5'],
-                ['id' => 15, 'name' => '15'],
-                ['id' => 25, 'name' => '25'],
-                ['id' => 50, 'name' => '50'],
-            ]" label="Records per page" />
-        </div>
+        <x-select wire:model.live="perPage" :options="[
+            ['id' => 5, 'name' => 5],
+            ['id' => 15, 'name' => 15],
+            ['id' => 25, 'name' => 25],
+            ['id' => 50, 'name' => 50],
+        ]" label="Records Per Page" />
     </div>
 
     <x-table :headers="$this->headers" :rows="$this->users">
@@ -47,13 +41,21 @@
         @endscope
 
         @scope('actions', $user)
-            @unless ($user->trashed())
-                <x-button icon="o-trash" wire:click="delete({{ $user->id }})" spinner class="btn-sm" />
-            @else
-                <x-button icon="o-arrow-path" wire:click="restore({{ $user->id }})" spinner
-                    class="btn-success btn-ghost btn-sm" />
-            @endunless
-        @endscope
-    </x-table>
-    {{ $this->users->links(data: ['scrollTo' => false]) }}
-</div>
+            @can(\App\Enum\Can::BE_AN_ADMIN->value)
+                @unless ($user->trashed())
+                    @unless ($user->is(auth()->user()))
+                        <x-button id="delete-btn-{{ $user->id }}" wire:key="delete-btn-{{ $user->id }}"
+                            icon="o-trash" wire:click="destroy('{{ $user->id }}')" spinner class="btn-sm" />
+                        @endif
+                    @else
+                        <x-button icon="o-arrow-path-rounded-square" wire:click="restore({{ $user->id }})"
+                            spinner class="btn-success btn-ghost btn-sm" />
+                    @endunless
+                @endcan
+            @endscope
+        </x-table>
+
+        {{ $this->users->links(data: ['scrollTo' => false]) }}
+
+        <livewire:admin.users.delete />
+    </div>
