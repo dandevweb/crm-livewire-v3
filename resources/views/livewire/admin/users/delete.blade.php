@@ -1,9 +1,17 @@
-<div>
-    <button wire:click="$set('modal', true)">
+<x-modal wire:model="modal" title="Deletion Confirmation"
+    subtitle="You are deleting the user {{ $user?->name }}" separator>
 
-    </button>
+    @error('confirmation')
+        <x-alert icon="o-exclamation-triangle" class="mb-4 alert-error">
+            {{ $message }}
+        </x-alert>
+    @enderror
 
-    @if ($modal)
-        <p>modal</p>
-    @endif
-</div>
+    <x-input class="input-sm" label="Write `DART VADER` to confirm the deletion"
+        wire:model="confirmation_confirmation" />
+
+    <x-slot:actions>
+        <x-button label="Cancel" @click="$wire.modal = false" />
+        <x-button label="Confirm" class="btn-primary" wire:click="destroy" />
+    </x-slot:actions>
+</x-modal>
