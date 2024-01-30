@@ -16,13 +16,13 @@
     <x-main full-width>
 
         {{-- The `$slot` goes here --}}
-        <x-slot:sidebar drawer="main-drawer" collapsible class="pt-3 text-white bg-sky-800">
+        <x-slot:sidebar drawer="main-drawer" collapsible class="bg-sky-800 pt-3 text-white">
 
             {{-- Hidden when collapsed --}}
-            <div class="ml-5 text-4xl font-black text-yellow-500 hidden-when-collapsed">mary</div>
+            <div class="hidden-when-collapsed ml-5 text-4xl font-black text-yellow-500">mary</div>
 
             {{-- Display when collapsed --}}
-            <div class="ml-5 text-4xl font-black text-orange-500 display-when-collapsed">m</div>
+            <div class="display-when-collapsed ml-5 text-4xl font-black text-orange-500">m</div>
 
             {{-- Custom `active menu item background color` --}}
             <x-menu activate-by-route active-bg-color="bg-base-300/10">
@@ -52,6 +52,11 @@
 
         {{-- The `$slot` goes here --}}
         <x-slot:content>
+
+            @if (session('impersonate'))
+                {{ __('You are impersonating :name, click here to stop the impersonation.', ['name' => auth()->user()->name]) }}
+            @endif
+
             {{ $slot }}
         </x-slot:content>
     </x-main>
