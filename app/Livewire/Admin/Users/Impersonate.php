@@ -2,8 +2,9 @@
 
 namespace App\Livewire\Admin\Users;
 
-use Livewire\Attributes\On;
+use App\Enum\Can;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class Impersonate extends Component
 {
@@ -17,6 +18,7 @@ class Impersonate extends Component
     #[On('user::impersonation')]
     public function impersonate(int $userId): void
     {
+        $this->authorize(Can::BE_AN_ADMIN->value);
         session()->put('impersonator', user()->id);
         session()->put('impersonate', $userId);
 
