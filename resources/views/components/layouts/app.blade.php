@@ -16,6 +16,10 @@
     @if (session('impersonate'))
         <livewire:admin.users.stop-impersonate />
     @endif
+
+    @if (!app()->environment('production'))
+        <livewire:dev.login />
+    @endif
     <x-main full-width>
 
         {{-- The `$slot` goes here --}}
