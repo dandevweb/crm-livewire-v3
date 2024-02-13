@@ -10,12 +10,13 @@
 </head>
 
 <body class="font-sans antialiased">
-    <livewire:dev.login />
+    @if (!app()->environment('production'))
+        <livewire:dev.login />
+    @endif
     <div
         class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 sm:justify-center sm:pt-0">
         {{ $slot }}
     </div>
 </body>
-<livewire:dev.login />
 
 </html>
