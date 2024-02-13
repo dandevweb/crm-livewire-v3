@@ -25,3 +25,8 @@ function obfuscateEmail(?string $email = null): string
 
     return $maskedFirstPart . '@' . $maskedSecondPart;
 }
+
+function user(): ?\App\Models\User
+{
+    return auth()->user();
+}
