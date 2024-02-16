@@ -11,7 +11,7 @@
 
 <body class="font-sans antialiased">
     @if (!app()->environment('production'))
-        <livewire:dev.login />
+        <x-devbar />
     @endif
     <div
         class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 sm:justify-center sm:pt-0">
