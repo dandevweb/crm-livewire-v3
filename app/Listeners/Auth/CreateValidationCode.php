@@ -3,6 +3,7 @@
 namespace App\Listeners\Auth;
 
 use Illuminate\Auth\Events\Registered;
+use App\Notifications\Auth\ValidationCodeNotification;
 
 class CreateValidationCode
 {
@@ -12,5 +13,7 @@ class CreateValidationCode
         $user                  = $event->user;
         $user->validation_code = random_int(100000, 999999);
         $user->save();
+
+        $user->notify(new ValidationCodeNotification());
     }
 }
