@@ -1,19 +1,32 @@
 <?php
 
-use Livewire\Livewire;
-use App\Livewire\Auth\Register;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use App\Listeners\Auth\CreateValidationCode;
 
-use function Pest\Laravel\assertDatabaseCount;
+use function PHPUnit\Framework\assertTrue;
 
-it('should send a verfication code to the new users email', function () {
+it('should create a new validation code and save in the users table', function () {
+    $user = User::factory()->create(['email_verified_at' => null, 'validation_code' => null]);
 
-    Livewire::test(Register::class)
-    ->set('name', 'John Doe')
-    ->set('email', 'joe@joe.com')
-    ->set('email_confirmation', 'joe@joe.com')
-    ->set('password', 'password')
-    ->call('submit');
+    $event    = new Registered($user);
+    $listener = new CreateValidationCode();
+    $listener->handle($event);
 
-    assertDatabaseCount('users', 1);
+    $user->refresh();
+
+    expect($user->validation_code)->not->toBeNull()
+        ->and($user)->validation_code->toBeNumeric();
+
+    assertTrue(strlen($user->validation_code) === 6);
 
 });
+
+it('should send that new code to the user via email', function () {
+
+})->todo();
+
+
+test('making sure that the listener to send the code is linked to the Registered event', function () {
+
+})->todo();
