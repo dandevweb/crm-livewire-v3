@@ -7,7 +7,6 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Livewire\Attributes\{Layout, Rule};
-use App\Notifications\WelcomeNotification;
 
 class Register extends Component
 {
@@ -39,8 +38,6 @@ class Register extends Component
         ]);
 
         auth()->login($user);
-
-        $user->notify(new WelcomeNotification());
 
         Event::dispatch(new Registered($user));
 

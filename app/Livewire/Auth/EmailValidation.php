@@ -6,6 +6,8 @@ use Closure;
 use Livewire\Component;
 use App\Events\SendNewCode;
 use Illuminate\Contracts\View\View;
+use App\Providers\RouteServiceProvider;
+use App\Notifications\WelcomeNotification;
 
 class EmailValidation extends Component
 {
@@ -20,11 +22,21 @@ class EmailValidation extends Component
     {
         $this->validate([
             'code' => function (string $attribute, mixed $value, Closure $fail) {
-                if ($value !== auth()->user()->validation_code) {
+                if ($value != auth()->user()->validation_code) {
                     $fail('Invalid code');
                 }
             },
         ]);
+
+        $user = auth()->user();
+
+        $user->validation_code   = null;
+        $user->email_verified_at = now();
+        $user->save();
+
+        $user->notify(new WelcomeNotification());
+
+        $this->redirect(RouteServiceProvider::HOME);
     }
 
     public function sendNewCode(): void
