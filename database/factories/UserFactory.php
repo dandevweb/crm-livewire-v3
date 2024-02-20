@@ -45,6 +45,13 @@ class UserFactory extends Factory
         return $this->afterCreating(fn (User $user) => $user->givePermissionTo(Can::BE_AN_ADMIN));
     }
 
+    public function withValidationCode(): static
+    {
+        return $this->state(fn () => [
+            'validation_code' => random_int(100000, 999999),
+        ]);
+    }
+
     public function deleted(): static
     {
         return $this->state(fn (array $attributes) => [
