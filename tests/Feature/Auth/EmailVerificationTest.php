@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\User;
+use Livewire\Livewire;
+use App\Livewire\Auth\Register;
+
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 
@@ -13,40 +16,57 @@ beforeEach(function () {
     Notification::fake();
 });
 
-it('should create a new validation code and save in the users table', function () {
-    $user = User::factory()->create(['email_verified_at' => null, 'validation_code' => null]);
+describe('after registration', function () {
 
-    $event    = new Registered($user);
-    $listener = new CreateValidationCode();
-    $listener->handle($event);
+    it('should create a new validation code and save in the users table', function () {
+        $user = User::factory()->create(['email_verified_at' => null, 'validation_code' => null]);
 
-    $user->refresh();
+        $event    = new Registered($user);
+        $listener = new CreateValidationCode();
+        $listener->handle($event);
 
-    expect($user->validation_code)->not->toBeNull()
-        ->and($user)->validation_code->toBeNumeric();
+        $user->refresh();
 
-    assertTrue(strlen($user->validation_code) === 6);
+        expect($user->validation_code)->not->toBeNull()
+            ->and($user)->validation_code->toBeNumeric();
 
+        assertTrue(strlen($user->validation_code) === 6);
+
+    });
+
+    it('should send that new code to the user via email', function () {
+        $user = User::factory()->create(['email_verified_at' => null, 'validation_code' => null]);
+
+        $event    = new Registered($user);
+        $listener = new CreateValidationCode();
+        $listener->handle($event);
+
+        Notification::assertSentTo(
+            $user,
+            ValidationCodeNotification::class
+        );
+
+    });
+
+
+    test('making sure that the listener to send the code is linked to the Registered event', function () {
+        Event::fake();
+
+        Event::assertListening(Registered::class, CreateValidationCode::class);
+
+    });
 });
 
-it('should send that new code to the user via email', function () {
-    $user = User::factory()->create(['email_verified_at' => null, 'validation_code' => null]);
-
-    $event    = new Registered($user);
-    $listener = new CreateValidationCode();
-    $listener->handle($event);
-
-    Notification::assertSentTo(
-        $user,
-        ValidationCodeNotification::class
-    );
-
-});
-
-
-test('making sure that the listener to send the code is linked to the Registered event', function () {
-    Event::fake();
-
-    Event::assertListening(Registered::class, CreateValidationCode::class);
+describe('validation page', function () {
+    it('should redirect to the validation page after registration', function () {
+        Livewire::test(Register::class)
+        ->set('name', 'John Doe')
+        ->set('email', 'joe@joe.com')
+        ->set('email_confirmation', 'joe@joe.com')
+        ->set('password', 'password')
+        ->call('submit')
+        ->assertHasNoErrors()
+        ->assertRedirect(route('auth.email-validation'));
+    });
 
 });
