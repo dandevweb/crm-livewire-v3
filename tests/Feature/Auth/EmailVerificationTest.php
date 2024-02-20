@@ -83,5 +83,24 @@ describe('validation page', function () {
             ]);
     });
 
+    it('should be able to send a new code to the user', function () {
+        $user = User::factory()->withValidationCode()->create();
+
+        actingAs($user);
+
+        $oldCode = $user->validation_code;
+
+        Livewire::test(EmailValidation::class)
+            ->call('sendNewCode');
+
+        expect($user->validation_code)->not->toBe($oldCode);
+
+        Notification::assertSentTo(
+            $user,
+            ValidationCodeNotification::class
+        );
+    });
+
+
 
 });
