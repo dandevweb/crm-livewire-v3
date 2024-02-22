@@ -1,6 +1,5 @@
 <?php
 
-use App\Enum\Can;
 
 use Livewire\Livewire;
 
@@ -50,10 +49,11 @@ test('check the table format', function () {
 });
 
 it('should be able to filter by name and email', function () {
-    $admin = User::factory()->admin()->create(['name' => 'joe Doe', 'email' => 'admin@gmail.com']);
-    $mario = User::factory()->create(['name' => 'Mario', 'email' => 'little_guy@gmail.com']);
+    $user = User::factory()->create();
+    Customer::factory()->create(['name' => 'joe Doe', 'email' => 'admin@gmail.com']);
+    $mario = Customer::factory()->create(['name' => 'Mario', 'email' => 'little_guy@gmail.com']);
 
-    actingAs($admin);
+    actingAs($user);
 
     Livewire::test(Customers\Index::class)
         ->assertSet('customers', function ($customers) {
@@ -77,12 +77,11 @@ it('should be able to filter by name and email', function () {
 });
 
 it('should be able to sort by name', function () {
-    $admin = User::factory()->admin()->create(['name' => 'joe Doe', 'email' => 'admin@gmail.com']);
-    $mario = User::factory()
-        ->withPermission(Can::TESTING)
-        ->create(['name' => 'Mario', 'email' => 'little_guy@gmail.com']);
+    $user = User::factory()->create();
+    Customer::factory()->create(['name' => 'joe Doe', 'email' => 'admin@gmail.com']);
+    $mario = Customer::factory()->create(['name' => 'Mario', 'email' => 'little_guy@gmail.com']);
 
-    actingAs($admin);
+    actingAs($user);
 
     Livewire::test(Customers\Index::class)
         ->set('sortDirection', 'asc')
@@ -107,12 +106,11 @@ it('should be able to sort by name', function () {
 });
 
 it('should be able to paginate the result', function () {
-    $admin = User::factory()->admin()->create(['name' => 'joe Doe', 'email' => 'admin@gmail.com']);
-    User::factory(30)
-       ->withPermission(Can::TESTING)
-       ->create();
+    $user = User::factory()->create();
+    Customer::factory(30)->create();
 
-    actingAs($admin);
+    actingAs($user);
+
 
     Livewire::test(Customers\Index::class)
         ->set('perPage', 20)
