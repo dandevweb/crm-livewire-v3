@@ -1,15 +1,16 @@
 <?php
 
 use App\Enum\Can;
-use App\Http\Middleware\ShouldBeVerified;
 use App\Livewire\{Admin, Welcome};
-use App\Livewire\Auth\{Login, Register, Password};
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Auth\EmailValidation;
+use App\Http\Middleware\ShouldBeVerified;
+use App\Livewire\Auth\{Login, Register, Password};
 
 //region Login Flow
 Route::get('login', Login::class)->name('login');
 Route::get('register', Register::class)->name('auth.register');
-Route::get('/email-validation', fn () => 'Email Validation')
+Route::get('/email-validation', EmailValidation::class)
     ->middleware('auth')
     ->name('auth.email-validation');
 Route::get('logout', fn () => auth()->logout())->name('auth.logout');

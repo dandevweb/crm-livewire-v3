@@ -45,6 +45,4 @@
         </x-form>
 
     </x-card>
-
-
 </div>
