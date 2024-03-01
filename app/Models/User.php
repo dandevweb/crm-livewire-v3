@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\Models\{HasPermissions, HasSearch};
 use Laravel\Sanctum\HasApiTokens;
-use App\Traits\Models\HasPermissions;
 use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use OwenIt\Auditing\Auditable as AuditableTrait;
 
 class User extends Authenticatable implements Auditable
 {
@@ -20,6 +20,7 @@ class User extends Authenticatable implements Auditable
     use HasPermissions;
     use SoftDeletes;
     use AuditableTrait;
+    use HasSearch;
 
     protected $fillable = [
         'name',

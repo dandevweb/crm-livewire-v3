@@ -7,7 +7,6 @@ use App\Support\Table\Header;
 use App\Traits\Livewire\HasTable;
 use Livewire\Attributes\Computed;
 use App\Models\{Permission, User};
-use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\{Builder, Collection};
 use Livewire\{Attributes\On, Component, WithPagination};
@@ -53,20 +52,7 @@ class Index extends Component
 
         return User::query()
             ->with('permissions')
-            ->when(
-                $this->search,
-                fn (Builder $q) => $q
-                    ->where(
-                        DB::raw('lower(name)'),
-                        'like',
-                        '%' . strtolower($this->search) . '%'
-                    )
-                    ->orWhere(
-                        'email',
-                        'like',
-                        '%' . strtolower($this->search) . '%'
-                    )
-            )
+            ->search($this->search, ['name', 'email'])
             ->when(
                 $this->search_permissions,
                 fn (Builder $q) => $q->whereHas('permissions', function (Builder $query) {

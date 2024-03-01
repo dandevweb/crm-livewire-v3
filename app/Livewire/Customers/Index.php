@@ -24,8 +24,7 @@ class Index extends Component
     public function customers(): LengthAwarePaginator
     {
         return Customer::query()
-            ->when($this->search, fn ($query, $search) => $query->where('name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%"))
+            ->search($this->search, ['name', 'email'])
             ->orderBy($this->sortColumnBy, $this->sortDirection)
             ->paginate($this->perPage);
     }
