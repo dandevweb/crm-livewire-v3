@@ -16,7 +16,7 @@
         ]" label="Records Per Page" />
     </div>
 
-    <x-table :headers="$this->headers" :rows="$this->customers">
+    <x-table :headers="$this->headers" :rows="$this->items">
         @scope('header_id', $header)
             <x-table.th :$header name="id" />
         @endscope
@@ -38,6 +38,6 @@
         @endscope
     </x-table>
 
-    {{ $this->customers->links(data: ['scrollTo' => false]) }}
+    {{ $this->items->links(data: ['scrollTo' => false]) }}
 
 </div>

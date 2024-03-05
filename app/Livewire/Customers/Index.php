@@ -3,30 +3,31 @@
 namespace App\Livewire\Customers;
 
 use App\Models\Customer;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
 use App\Support\Table\Header;
 use App\Traits\Livewire\HasTable;
-use Livewire\Attributes\Computed;
 use Livewire\{Component, WithPagination};
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class Index extends Component
 {
     use WithPagination;
     use HasTable;
 
+
     public function render(): View
     {
         return view('livewire.customers.index');
     }
 
-    #[Computed]
-    public function customers(): LengthAwarePaginator
+    public function query(): Builder
     {
-        return Customer::query()
-            ->search($this->search, ['name', 'email'])
-            ->orderBy($this->sortColumnBy, $this->sortDirection)
-            ->paginate($this->perPage);
+        return Customer::query();
+    }
+
+    public function searchColumns(): array
+    {
+        return ['name', 'email'];
     }
 
     public function tableHeaders(): array
@@ -36,11 +37,5 @@ class Index extends Component
             Header::make('name', 'Name'),
             Header::make('email', 'Email'),
         ];
-    }
-
-    public function sortBy(string $column, string $direction): void
-    {
-        $this->sortColumnBy  = $column;
-        $this->sortDirection = $direction;
     }
 }
