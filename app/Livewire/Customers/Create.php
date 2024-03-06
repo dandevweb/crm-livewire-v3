@@ -12,10 +12,10 @@ class Create extends Component
     #[Validate(['required', 'min:3', 'max:255'])]
     public string $name = '';
 
-    #[Validate(["required_without:phone", 'email', 'unique:customers,email'])]
+    #[Validate(["required_without:phone", 'email', 'unique:customers'])]
     public string $email = '';
 
-    #[Validate(["required_without:email", 'unique:customers,phone'])]
+    #[Validate(["required_without:email", 'unique:customers'])]
     public string $phone = '';
 
     public bool $modal = false;
