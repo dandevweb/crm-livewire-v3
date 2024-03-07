@@ -1,5 +1,4 @@
 <div>
-    <livewire:customers.archive />
 
     <x-header title="Customers" separator />
 
@@ -38,12 +37,14 @@
         @endscope
 
         @scope('actions', $customer)
-            <div class="flex items-center">
-                <x-button id="archive-btn-{{ $customer->id }}"
-                    wire:key="archive-btn-{{ $customer->id }}" icon="o-trash"
-                    x-on:click="$dispatch('customer::archive', { id: {{ $customer->id }} })" spinner
-                    class="btn-sm" />
-            </div>
+            @unless ($customer->trashed())
+                <div class="flex items-center">
+                    <x-button id="archive-btn-{{ $customer->id }}"
+                        wire:key="archive-btn-{{ $customer->id }}" icon="o-trash"
+                        x-on:click="$dispatch('customer::archive', { id: {{ $customer->id }} })" spinner
+                        class="btn-sm" />
+                </div>
+            @endunless
         @endscope
 
     </x-table>
@@ -51,5 +52,6 @@
     {{ $this->items->links(data: ['scrollTo' => false]) }}
 
     <livewire:customers.create />
+    <livewire:customers.archive />
 
 </div>
