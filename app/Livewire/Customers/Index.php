@@ -3,10 +3,11 @@
 namespace App\Livewire\Customers;
 
 use App\Models\Customer;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 use App\Support\Table\Header;
 use App\Traits\Livewire\HasTable;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\{Component, WithPagination};
 
 class Index extends Component
@@ -15,6 +16,7 @@ class Index extends Component
     use HasTable;
 
 
+    #[On('customer::reload')]
     public function render(): View
     {
         return view('livewire.customers.index');

@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 class Archive extends Component
 {
     public Customer $customer;
+    public bool $modal = false;
 
     public function render(): View
     {
@@ -20,11 +21,13 @@ class Archive extends Component
     public function confirmAction(int $id): void
     {
         $this->customer = Customer::findOrFail($id);
-        $this->archive();
+        $this->modal    = true;
     }
 
     public function archive(): void
     {
         $this->customer->delete();
+        $this->modal = false;
+        $this->dispatch('customer::reload')->to('customers.index');
     }
 }
