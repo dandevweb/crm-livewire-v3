@@ -1,9 +1,9 @@
 <div>
+
     <x-header title="Customers" separator />
 
-
     <div class="mb-4 flex items-end justify-between">
-        <div class="flex w-full items-end gap-4">
+        <div class="flex w-full gap-4">
             <div class="w-1/3">
                 <x-input label="Search by email or name" icon="o-magnifying-glass"
                     wire:model.live="search" />
@@ -15,6 +15,9 @@
                 ['id' => 25, 'name' => 25],
                 ['id' => 50, 'name' => 50],
             ]" label="Records Per Page" />
+
+            <x-checkbox label="Show Archived Customers" wire:model.live="search_trash"
+                class="checkbox-primary" right tight />
         </div>
 
         <x-button x-on:click="$dispatch('customer::create')" label="New Customer" icon="o-plus" />
@@ -34,16 +37,21 @@
         @endscope
 
         @scope('actions', $customer)
-            <div class="flex items-center">
-                <x-button id="shoe-btn-{{ $customer->id }}" wire:key="show-btn-{{ $customer->id }}"
-                    icon="o-pencil" wire:click="showUser('{{ $customer->id }}')" spinner
-                    class="btn-sm" />
-            </div>
+            @unless ($customer->trashed())
+                <div class="flex items-center">
+                    <x-button id="archive-btn-{{ $customer->id }}"
+                        wire:key="archive-btn-{{ $customer->id }}" icon="o-trash"
+                        x-on:click="$dispatch('customer::archive', { id: {{ $customer->id }} })" spinner
+                        class="btn-sm" />
+                </div>
+            @endunless
         @endscope
+
     </x-table>
 
     {{ $this->items->links(data: ['scrollTo' => false]) }}
 
     <livewire:customers.create />
+    <livewire:customers.archive />
 
 </div>

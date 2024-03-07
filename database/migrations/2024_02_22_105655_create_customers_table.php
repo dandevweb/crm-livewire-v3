@@ -32,6 +32,7 @@ return new class () extends Migration {
             $table->string('position', 200)->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
