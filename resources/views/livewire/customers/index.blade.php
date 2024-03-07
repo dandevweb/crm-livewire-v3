@@ -4,7 +4,7 @@
     <x-header title="Customers" separator />
 
     <div class="mb-4 flex items-end justify-between">
-        <div class="flex w-full items-end gap-4">
+        <div class="flex w-full gap-4">
             <div class="w-1/3">
                 <x-input label="Search by email or name" icon="o-magnifying-glass"
                     wire:model.live="search" />
@@ -16,6 +16,9 @@
                 ['id' => 25, 'name' => 25],
                 ['id' => 50, 'name' => 50],
             ]" label="Records Per Page" />
+
+            <x-checkbox label="Show Archived Customers" wire:model.live="search_trash"
+                class="checkbox-primary" right tight />
         </div>
 
         <x-button x-on:click="$dispatch('customer::create')" label="New Customer" icon="o-plus" />

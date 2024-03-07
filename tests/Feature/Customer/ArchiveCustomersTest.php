@@ -2,7 +2,8 @@
 
 use Livewire\Livewire;
 use App\Models\Customer;
-use App\Livewire\Customers\Archive;
+use App\Livewire\Customers\{Archive, Index};
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use function Pest\Laravel\assertSoftDeleted;
 
@@ -46,4 +47,31 @@ test('after archiving we should close the modal', function () {
         ->set('customer', $customer)
         ->call('archive')
         ->assertSet('modal', false);
+});
+
+it('should list archived items', function () {
+    $notArchived = Customer::factory(2)->create();
+    $archived    = Customer::factory()->deleted()->create();
+
+    Livewire::test(Index::class)
+        ->set('search_trash', false)
+        ->assertSee('items', function (LengthAwarePaginator $items) use ($archived) {
+            expect($items->items())->toHaveCount(2)
+                ->and(
+                    collect($items->items())
+                        ->filter(fn (Customer $customer) => $customer->id === $archived->id)
+                )->toBeEmpty();
+
+            return true;
+        })
+        ->set('search_trash', true)
+        ->assertSee('items', function (LengthAwarePaginator $items) use ($archived) {
+            expect($items->items())->toHaveCount(1)
+                ->and(
+                    collect($items->items())
+                        ->filter(fn (Customer $customer) => $customer->id === $archived->id)
+                )->not->toBeEmpty();
+
+            return true;
+        });
 });
