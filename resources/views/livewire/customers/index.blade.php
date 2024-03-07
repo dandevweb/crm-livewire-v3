@@ -1,6 +1,7 @@
 <div>
-    <x-header title="Customers" separator />
+    <livewire:customers.archive />
 
+    <x-header title="Customers" separator />
 
     <div class="mb-4 flex items-end justify-between">
         <div class="flex w-full items-end gap-4">
@@ -35,11 +36,13 @@
 
         @scope('actions', $customer)
             <div class="flex items-center">
-                <x-button id="shoe-btn-{{ $customer->id }}" wire:key="show-btn-{{ $customer->id }}"
-                    icon="o-pencil" wire:click="showUser('{{ $customer->id }}')" spinner
+                <x-button id="archive-btn-{{ $customer->id }}"
+                    wire:key="archive-btn-{{ $customer->id }}" icon="o-trash"
+                    x-on:click="$dispatch('customer::archive', { id: {{ $customer->id }} })" spinner
                     class="btn-sm" />
             </div>
         @endscope
+
     </x-table>
 
     {{ $this->items->links(data: ['scrollTo' => false]) }}
