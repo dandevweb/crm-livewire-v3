@@ -2,6 +2,8 @@
 
 use Livewire\Livewire;
 use App\Models\Customer;
+use App\Livewire\Customers\Index;
+
 use App\Livewire\Customers\{Restore};
 
 use function Pest\Laravel\assertNotSoftDeleted;
@@ -25,7 +27,8 @@ test('when confirming we should load the customer and set modal to true', functi
     Livewire::test(Restore::class)
         ->call('confirmAction', $customer->id)
         ->assertSet('customer.id', $customer->id)
-        ->assertSet('modal', true);
+        ->assertSet('modal', true)
+        ->assertPropertyEntangled('modal');
 });
 
 test('after restoring we should dispatch an event to tell the list to reload', function () {
@@ -46,4 +49,14 @@ test('after restoring we should close the modal', function () {
         ->set('customer', $customer)
         ->call('restore')
         ->assertSet('modal', false);
+});
+
+test('making sure restore method is wired', function () {
+    Livewire::test(Restore::class)
+        ->assertMethodWired('restore');
+});
+
+test('check if component is in the page', function () {
+    Livewire::test(Index::class)
+        ->assertContainsLivewireComponent('customers.restore');
 });

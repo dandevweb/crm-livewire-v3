@@ -2,7 +2,7 @@
     subtitle="You are restoring access for the user {{ $user?->name }}" separator>
 
     @error('confirmation')
-        <x-alert icon="o-exclamation-triangle" class="mb-4 alert-error">
+        <x-alert icon="o-exclamation-triangle" class="alert-error mb-4">
             {{ $message }}
         </x-alert>
     @enderror
@@ -11,7 +11,7 @@
         wire:model="confirmation_confirmation" />
 
     <x-slot:actions>
-        <x-button label="Cancel" @click="$wire.modal = false" />
+        <x-button label="Cancel" x-on:click="$wire.modal = false" />
         <x-button label="Confirm" class="btn-primary" wire:click="restore" />
     </x-slot:actions>
 </x-modal>

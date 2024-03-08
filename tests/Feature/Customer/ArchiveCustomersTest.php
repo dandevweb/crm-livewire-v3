@@ -1,8 +1,10 @@
 <?php
 
+
 use Livewire\Livewire;
 use App\Models\Customer;
 use App\Livewire\Customers\{Archive, Index};
+
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use function Pest\Laravel\assertSoftDeleted;
@@ -74,4 +76,14 @@ it('should list archived items', function () {
 
             return true;
         });
+});
+
+test('making sure archive method is wired', function () {
+    Livewire::test(Archive::class)
+        ->assertMethodWired('archive');
+});
+
+test('check if component is in the page', function () {
+    Livewire::test(Index::class)
+        ->assertContainsLivewireComponent('customers.archive');
 });
