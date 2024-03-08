@@ -52,3 +52,10 @@ test('making sure that the method loadUser has the attribute On', function () {
 
     expect($argument)->toBe('user::show');
 });
+
+test('check if component is in the page', function () {
+    actingAs(User::factory()->admin()->create());
+
+    Livewire::test(Index::class)
+        ->assertContainsLivewireComponent('admin.users.show');
+});
