@@ -23,6 +23,7 @@ class Index extends Component
         return view('livewire.customers.index');
     }
 
+
     public function query(): Builder
     {
         return Customer::query()
