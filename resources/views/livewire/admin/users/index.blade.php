@@ -57,8 +57,8 @@
                                 wire:click="impersonate('{{ $user->id }}')" spinner class="btn-sm" />
                             @endif
                         @else
-                            <x-button icon="o-arrow-path-rounded-square" wire:click="restore({{ $user->id }})"
-                                spinner class="btn-success btn-ghost btn-sm" />
+                            <x-button icon="o-arrow-uturn-left" wire:click="restore({{ $user->id }})" spinner
+                                class="btn-success btn-ghost btn-sm" />
                         @endunless
                     @endcan
                 </div>
