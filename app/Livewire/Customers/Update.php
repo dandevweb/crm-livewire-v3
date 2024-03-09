@@ -23,7 +23,7 @@ class Update extends Component
     {
         $customer = Customer::find($id);
         $this->form->setCustomer($customer);
-        $this->resetErrorBag();
+        $this->form->resetErrorBag();
         $this->modal = true;
     }
 
