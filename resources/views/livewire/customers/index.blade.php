@@ -39,6 +39,10 @@
         @scope('actions', $customer)
             @unless ($customer->trashed())
                 <div class="flex items-center">
+                    <x-button id="show-btn-{{ $customer->id }}" wire:key="show-btn-{{ $customer->id }}"
+                        icon="o-pencil" wire:click="showCustomer('{{ $customer->id }}')" spinner
+                        class="btn-sm" />
+
                     <x-button id="archive-btn-{{ $customer->id }}"
                         wire:key="archive-btn-{{ $customer->id }}" icon="o-trash"
                         x-on:click="$dispatch('customer::archive', { id: {{ $customer->id }} })" spinner
@@ -46,6 +50,7 @@
                 </div>
             @else
                 <div class="flex items-center">
+
                     <x-button id="restore-btn-{{ $customer->id }}"
                         wire:key="restore-btn-{{ $customer->id }}" icon="o-arrow-uturn-left"
                         x-on:click="$dispatch('customer::restore', { id: {{ $customer->id }} })" spinner
@@ -61,5 +66,6 @@
     <livewire:customers.create />
     <livewire:customers.archive />
     <livewire:customers.restore />
+    <livewire:customers.update />
 
 </div>

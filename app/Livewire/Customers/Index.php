@@ -46,4 +46,9 @@ class Index extends Component
             Header::make('email', 'Email'),
         ];
     }
+
+    public function showUser(int $id): void
+    {
+        $this->dispatch('user::customer', id: $id)->to('admin.users.customer');
+    }
 }
