@@ -28,10 +28,11 @@ class Update extends Component
     }
 
 
-    public function save()
+    public function save(): void
     {
         $this->form->update();
 
         $this->modal = false;
+        $this->dispatch('customer::reload')->to('customers.index');
     }
 }

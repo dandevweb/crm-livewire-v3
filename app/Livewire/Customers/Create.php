@@ -27,5 +27,8 @@ class Create extends Component
     public function save(): void
     {
         $this->form->create();
+
+        $this->modal = false;
+        $this->dispatch('customer::reload')->to('customers.index');
     }
 }

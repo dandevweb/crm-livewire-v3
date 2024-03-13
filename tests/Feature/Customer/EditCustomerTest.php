@@ -78,6 +78,12 @@ describe('validations', function () {
             ->set('form.phone', '1234567890')
             ->call('save')
             ->assertHasErrors(['form.email' => 'unique']);
+
+        Livewire::test(Customers\Update::class)
+            ->call('load', $this->customer->id)
+            ->set('form.email', $this->customer->email)
+            ->call('save')
+            ->assertHasNoErrors(['form.email' => 'unique']);
     });
 
     test('phone should be required if don`t have a email', function () {
@@ -102,6 +108,12 @@ describe('validations', function () {
             ->set('form.phone', $phone)
             ->call('save')
             ->assertHasErrors(['form.phone' => 'unique']);
+
+        Livewire::test(Customers\Update::class)
+            ->call('load', $this->customer->id)
+            ->set('form.phone', $this->customer->phone)
+            ->call('save')
+            ->assertHasNoErrors(['form.phone' => 'unique']);
 
     });
 
