@@ -13,7 +13,7 @@ it('should be able to show all the details of the user in the component', functi
     actingAs($admin);
 
     Livewire::test(Show::class)
-        ->call('loadUser', $user->id)
+        ->call('load', $user->id)
         ->assertSet('user.id', $user->id)
         ->assertSet('modal', true)
         ->assertSee($user->name)
@@ -39,7 +39,7 @@ test('making sure that the method loadUser has the attribute On', function () {
 
     $reflection = new ReflectionClass(new Show());
 
-    $attributes = $reflection->getMethod('loadUser')->getAttributes();
+    $attributes = $reflection->getMethod('load')->getAttributes();
 
     expect($attributes)->toHaveCount(1);
 

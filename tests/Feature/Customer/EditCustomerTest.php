@@ -8,10 +8,12 @@ use function Pest\Laravel\{actingAs, assertDatabaseHas};
 
 beforeEach(function () {
     actingAs(User::factory()->create());
+    $this->customer = Customer::factory()->create();
 });
 
-it('should be able to create a customer', function () {
-    Livewire::test(Customers\Create::class)
+it('should be able to updated a customer', function () {
+    Livewire::test(Customers\Update::class)
+        ->call('load', $this->customer->id)
         ->set('form.name', 'John Doe')
         ->assertPropertyWired('form.name')
         ->set('form.email', 'joe@joe.com')
@@ -23,6 +25,7 @@ it('should be able to create a customer', function () {
         ->assertHasNoErrors();
 
     assertDatabaseHas('customers', [
+        'id'    => $this->customer->id,
         'name'  => 'John Doe',
         'email' => 'joe@joe.com',
         'phone' => '1234567890',
@@ -32,7 +35,8 @@ it('should be able to create a customer', function () {
 
 describe('validations', function () {
     test('name should required', function ($rule, $value) {
-        Livewire::test(Customers\Create::class)
+        Livewire::test(Customers\Update::class)
+            ->call('load', $this->customer->id)
             ->set('form.name', $value)
             ->call('save')
             ->assertHasErrors(['form.name' => $rule]);
@@ -43,7 +47,8 @@ describe('validations', function () {
     ]);
 
     test('email should be required if don`t have a phone', function () {
-        Livewire::test(Customers\Create::class)
+        Livewire::test(Customers\Update::class)
+            ->call('load', $this->customer->id)
             ->set('form.name', 'John Doe')
             ->set('form.email', '')
             ->set('form.phone', '')
@@ -52,7 +57,8 @@ describe('validations', function () {
     });
 
     test('email should be valid', function () {
-        Livewire::test(Customers\Create::class)
+        Livewire::test(Customers\Update::class)
+            ->call('load', $this->customer->id)
             ->set('form.name', 'John Doe')
             ->set('form.email', 'joe')
             ->set('form.phone', '1234567890')
@@ -65,16 +71,24 @@ describe('validations', function () {
 
         Customer::factory()->create(['email' => $email]);
 
-        Livewire::test(Customers\Create::class)
+        Livewire::test(Customers\Update::class)
+            ->call('load', $this->customer->id)
             ->set('form.name', 'John Doe')
             ->set('form.email', $email)
             ->set('form.phone', '1234567890')
             ->call('save')
             ->assertHasErrors(['form.email' => 'unique']);
+
+        Livewire::test(Customers\Update::class)
+            ->call('load', $this->customer->id)
+            ->set('form.email', $this->customer->email)
+            ->call('save')
+            ->assertHasNoErrors(['form.email' => 'unique']);
     });
 
     test('phone should be required if don`t have a email', function () {
-        Livewire::test(Customers\Create::class)
+        Livewire::test(Customers\Update::class)
+            ->call('load', $this->customer->id)
             ->set('form.name', 'John Doe')
             ->set('form.email', '')
             ->set('form.phone', '')
@@ -87,12 +101,19 @@ describe('validations', function () {
 
         Customer::factory()->create(['phone' => $phone]);
 
-        Livewire::test(Customers\Create::class)
+        Livewire::test(Customers\Update::class)
+            ->call('load', $this->customer->id)
             ->set('form.name', 'John Doe')
             ->set('form.email', 'joe@joe.com')
             ->set('form.phone', $phone)
             ->call('save')
             ->assertHasErrors(['form.phone' => 'unique']);
+
+        Livewire::test(Customers\Update::class)
+            ->call('load', $this->customer->id)
+            ->set('form.phone', $this->customer->phone)
+            ->call('save')
+            ->assertHasNoErrors(['form.phone' => 'unique']);
 
     });
 
@@ -100,5 +121,5 @@ describe('validations', function () {
 
 test('check if component is in the page', function () {
     Livewire::test(Customers\Index::class)
-        ->assertContainsLivewireComponent('customers.create');
+        ->assertContainsLivewireComponent('customers.update');
 });
