@@ -1,0 +1,121 @@
+<?php
+
+
+use Livewire\Livewire;
+
+use App\Models\Opportunity;
+
+use App\Models\{Permission, User};
+use App\Livewire\Opportunities;
+
+use Illuminate\Pagination\LengthAwarePaginator;
+
+use function Pest\Laravel\{get, actingAs};
+
+it('should be able to access the route opportunities', function () {
+    actingAs(User::factory()->create());
+
+    get(route('opportunities'))
+        ->assertOk();
+});
+
+test("let's create a livewire component to list all opportunities in the page", function () {
+    actingAs(User::factory()->create());
+    $opportunities = Opportunity::factory()->count(10)->create();
+
+    $lw = Livewire::test(Opportunities\Index::class);
+
+    $lw->assertSet('items', function ($items) {
+        expect($items)
+        ->toHaveCount(10);
+
+        return true;
+    });
+
+    foreach ($opportunities as $opportunity) {
+        $lw->assertSee($opportunity->title);
+    }
+});
+
+test('check the table format', function () {
+    actingAs(User::factory()->admin()->create());
+
+    Livewire::test(Opportunities\Index::class)
+        ->assertSet('headers', [
+            ['key' => 'id', 'label' => '#', 'sortColumnBy' => 'id', 'sortDirection' => 'asc'],
+            ['key' => 'title', 'label' => 'Title', 'sortColumnBy' => 'id', 'sortDirection' => 'asc'],
+            ['key' => 'status', 'label' => 'Status', 'sortColumnBy' => 'id', 'sortDirection' => 'asc'],
+            ['key' => 'amount', 'label' => 'Amount', 'sortColumnBy' => 'id', 'sortDirection' => 'asc'],
+        ]);
+});
+
+it('should be able to filter by title', function () {
+    $user = User::factory()->create();
+    Opportunity::factory()->create(['title' => 'joe Doe']);
+    $mario = Opportunity::factory()->create(['title' => 'Mario']);
+
+    actingAs($user);
+
+    Livewire::test(Opportunities\Index::class)
+        ->assertSet('items', function ($items) {
+            expect($items)->toHaveCount(2);
+
+            return true;
+        })
+        ->set('search', 'mar')
+        ->assertPropertyWired('search')
+        ->assertSet('items', function ($items) {
+            expect($items)->toHaveCount(1)->first()->title->toBe('Mario');
+
+            return true;
+        });
+
+});
+
+it('should be able to sort by title', function () {
+    $user = User::factory()->create();
+    Opportunity::factory()->create(['title' => 'joe Doe']);
+    $mario = Opportunity::factory()->create(['title' => 'Mario']);
+
+    actingAs($user);
+
+    Livewire::test(Opportunities\Index::class)
+        ->set('sortDirection', 'asc')
+        ->set('sortColumnBy', 'title')
+        ->assertSet('items', function ($items) {
+            expect($items)
+                ->first()->title->toBe('joe Doe')
+                ->and($items)->last()->title->toBe('Mario');
+
+            return true;
+        })
+        ->set('sortDirection', 'desc')
+        ->set('sortColumnBy', 'title')
+        ->assertSet('items', function ($items) {
+            expect($items)
+                ->first()->title->toBe('Mario')
+                ->and($items)->last()->title->toBe('joe Doe');
+
+            return true;
+        });
+
+});
+
+it('should be able to paginate the result', function () {
+    $user = User::factory()->create();
+    Opportunity::factory(30)->create();
+
+    actingAs($user);
+
+
+    Livewire::test(Opportunities\Index::class)
+        ->set('perPage', 20)
+        ->assertPropertyWired('perPage')
+        ->assertSet('items', function (LengthAwarePaginator $items) {
+            expect($items)
+                ->toHaveCount(20);
+
+            return true;
+        });
+
+});
