@@ -60,7 +60,6 @@ describe('validations', function () {
             ->assertHasErrors(['form.amount' => $rule]);
     })->with([
         'required' => ['required', ''],
-        'numeric'  => ['numeric', 'non-numeric'],
     ]);
 
 });

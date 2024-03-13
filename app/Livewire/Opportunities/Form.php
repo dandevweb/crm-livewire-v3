@@ -16,8 +16,8 @@ class Form extends BaseForm
     #[Validate(['required', 'in:open,won,lost'])]
     public string $status = '';
 
-    #[Validate(['required', 'numeric'])]
-    public int $amount = 0;
+    #[Validate(['required'])]
+    public ?string $amount = null;
 
 
     public function setOpportunity(Opportunity $opportunity): void
@@ -26,7 +26,7 @@ class Form extends BaseForm
 
         $this->title  = $opportunity->title;
         $this->status = $opportunity->status;
-        $this->amount = $opportunity->amount;
+        $this->amount = (string)$opportunity->amount;
     }
 
     public function create(): void
