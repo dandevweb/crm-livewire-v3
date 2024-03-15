@@ -26,7 +26,7 @@ class Form extends BaseForm
 
         $this->title  = $opportunity->title;
         $this->status = $opportunity->status;
-        $this->amount = (string)$opportunity->amount;
+        $this->amount = $opportunity->amount ?? 0;
     }
 
     public function create(): void
@@ -48,7 +48,8 @@ class Form extends BaseForm
 
         $this->opportunity->title  = $this->title;
         $this->opportunity->status = $this->status;
-        $this->opportunity->amount = $this->amount;
+        /** @phpstan-ignore-next-line */
+        $this->opportunity->amount = $this->amount ?? 0;
 
         $this->opportunity->update();
     }

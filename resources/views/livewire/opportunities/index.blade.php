@@ -40,6 +40,19 @@
             <x-table.th :$header name="amount" />
         @endscope
 
+        @scope('cell_status', $item)
+            <x-badge :value="$item->status" @class([
+                'badge-outline badge-sm',
+                'badge-error' => $item->status === 'lost',
+                'badge-success' => $item->status === 'won',
+                'badge-info' => $item->status === 'open',
+            ]) />
+        @endscope
+
+        @scope('cell_amount', $item)
+            R$ {{ number_format($item->amount, 2, ',', '.') }}
+        @endscope
+
         @scope('actions', $opportunity)
             <div class="flex items-center">
                 <x-button id="update-btn-{{ $opportunity->id }}"
