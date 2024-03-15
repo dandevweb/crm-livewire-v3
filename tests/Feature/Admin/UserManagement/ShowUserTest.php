@@ -21,7 +21,7 @@ it('should be able to show all the details of the user in the component', functi
         ->assertSee($user->created_at->format('d/m/Y'))
         ->assertSee($user->updated_at->format('d/m/Y'))
         ->assertSee($user->deleted_at->format('d/m/Y'))
-        ->assertSee($user->deletedBy->name);
+        ->assertSee($user->deletedBy?->name);
 });
 
 it('should open the modal when the event is dispatched', function () {

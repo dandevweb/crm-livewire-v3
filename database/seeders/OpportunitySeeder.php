@@ -6,11 +6,8 @@ use Illuminate\Database\Seeder;
 
 class OpportunitySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
+        \App\Models\Opportunity::factory(10)->create();
     }
 }
