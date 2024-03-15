@@ -1,7 +1,7 @@
 <?php
 
 use App\Enum\Can;
-use App\Livewire\{Admin, Welcome, Customers};
+use App\Livewire\{Admin, Welcome, Customers, Opportunities};
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Auth\EmailValidation;
 use App\Http\Middleware\ShouldBeVerified;
@@ -25,6 +25,11 @@ Route::middleware(['auth', ShouldBeVerified::class])->group(function () {
     //region Customers
     Route::get('/customers', Customers\Index::class)->name('customers');
     Route::get('/customers/{show}/', fn () => 'oi')->name('customers.show');
+
+    //endregion
+
+    //region Opportunities
+    Route::get('/opportunities', Opportunities\Index::class)->name('opportunities');
 
     //endregion
 

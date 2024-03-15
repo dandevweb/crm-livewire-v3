@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enum\Can;
 use App\Models\User;
 use Illuminate\Support\Str;
+use App\Traits\Factory\HasDeleted;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UserFactory extends Factory
 {
+    use HasDeleted;
+
     protected static ?string $password;
 
     public function definition(): array
@@ -50,14 +53,6 @@ class UserFactory extends Factory
         return $this->state(fn () => [
             'validation_code'   => random_int(100000, 999999),
             'email_verified_at' => null,
-        ]);
-    }
-
-    public function deleted(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'deleted_at' => now(),
-            'deleted_by' => User::factory()->admin(),
         ]);
     }
 
