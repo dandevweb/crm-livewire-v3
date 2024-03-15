@@ -7,7 +7,7 @@
                 ['id' => 'won', 'name' => 'Won'],
                 ['id' => 'lost', 'name' => 'Lost'],
             ]" label="Status" wire:model="form.status" />
-            <x-input label="Amount" wire:model="form.amount" prefix="R$" locale="pt-BR" money />
+            <x-input label="Amount" wire:model="form.amount" prefix="R$" locale="pt-BR" />
         </div>
     </x-form>
 

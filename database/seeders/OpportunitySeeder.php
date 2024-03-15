@@ -8,6 +8,6 @@ class OpportunitySeeder extends Seeder
 {
     public function run(): void
     {
-        \App\Models\Opportunity::factory(10)->create();
+        \App\Models\Opportunity::factory(300)->create();
     }
 }
