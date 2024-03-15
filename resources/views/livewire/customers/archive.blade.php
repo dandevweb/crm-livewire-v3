@@ -1,5 +1,5 @@
 <x-modal wire:model="modal" title="Archive Confirmation"
-    subtitle="You are archiving the customer {{ $customer?->name }}">
+    subtitle="You are archiving the customer {{ $customer?->title }}">
 
     <x-slot:actions>
         <x-button label="Hum... no" x-on:click="$wire.modal=false" />
