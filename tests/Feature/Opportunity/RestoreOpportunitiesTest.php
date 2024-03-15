@@ -1,52 +1,52 @@
 <?php
 
 use Livewire\Livewire;
-use App\Models\Customer;
-use App\Livewire\Customers\Index;
+use App\Models\Opportunity;
+use App\Livewire\Opportunities\Index;
 
-use App\Livewire\Customers\{Restore};
+use App\Livewire\Opportunities\{Restore};
 
 use function Pest\Laravel\assertNotSoftDeleted;
 
-it('should be able to restore a customer', function () {
+it('should be able to restore a opportunity', function () {
 
-    $customer = Customer::factory()->deleted()->create();
+    $opportunity = Opportunity::factory()->deleted()->create();
 
     Livewire::test(Restore::class)
-        ->set('customer', $customer)
+        ->set('opportunity', $opportunity)
         ->call('restore');
 
-    assertNotSoftDeleted('customers', ['id' => $customer->id]);
+    assertNotSoftDeleted('opportunities', ['id' => $opportunity->id]);
 
 });
 
-test('when confirming we should load the customer and set modal to true', function () {
+test('when confirming we should load the opportunity and set modal to true', function () {
 
-    $customer = Customer::factory()->deleted()->create();
+    $opportunity = Opportunity::factory()->deleted()->create();
 
     Livewire::test(Restore::class)
-        ->call('confirmAction', $customer->id)
-        ->assertSet('customer.id', $customer->id)
+        ->call('confirmAction', $opportunity->id)
+        ->assertSet('opportunity.id', $opportunity->id)
         ->assertSet('modal', true)
         ->assertPropertyEntangled('modal');
 });
 
 test('after restoring we should dispatch an event to tell the list to reload', function () {
 
-    $customer = Customer::factory()->deleted()->create();
+    $opportunity = Opportunity::factory()->deleted()->create();
 
     Livewire::test(Restore::class)
-        ->set('customer', $customer)
+        ->set('opportunity', $opportunity)
         ->call('restore')
-        ->assertDispatched('customer::reload');
+        ->assertDispatched('opportunity::reload');
 });
 
 test('after restoring we should close the modal', function () {
 
-    $customer = Customer::factory()->deleted()->create();
+    $opportunity = Opportunity::factory()->deleted()->create();
 
     Livewire::test(Restore::class)
-        ->set('customer', $customer)
+        ->set('opportunity', $opportunity)
         ->call('restore')
         ->assertSet('modal', false);
 });
@@ -58,5 +58,5 @@ test('making sure restore method is wired', function () {
 
 test('check if component is in the page', function () {
     Livewire::test(Index::class)
-        ->assertContainsLivewireComponent('customers.restore');
+        ->assertContainsLivewireComponent('opportunities.restore');
 });
