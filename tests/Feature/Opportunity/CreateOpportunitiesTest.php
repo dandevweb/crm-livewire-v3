@@ -11,7 +11,11 @@ beforeEach(function () {
 });
 
 it('should be able to create a opportunity', function () {
+    $customer = Customer::factory()->create();
+
     Livewire::test(Opportunities\Create::class)
+        ->set('form.customer_id', $customer->id)
+        ->assertPropertyWired('form.customer_id')
         ->set('form.title', 'John Doe')
         ->assertPropertyWired('form.title')
         ->set('form.status', 'won')
@@ -23,13 +27,24 @@ it('should be able to create a opportunity', function () {
         ->assertHasNoErrors();
 
     assertDatabaseHas('opportunities', [
-        'title'  => 'John Doe',
-        'status' => 'won',
-        'amount' => '12345',
+        'customer_id' => $customer->id,
+        'title'       => 'John Doe',
+        'status'      => 'won',
+        'amount'      => '12345',
     ]);
 });
 
 describe('validations', function () {
+    test('customer', function ($rule, $value) {
+        Livewire::test(Opportunities\Create::class)
+            ->set('form.customer_id', $value)
+            ->call('save')
+            ->assertHasErrors(['form.customer_id' => $rule]);
+    })->with([
+        'required' => ['required', ''],
+        'exists'   => ['exists', 999],
+    ]);
+
     test('title should required', function ($rule, $value) {
         Livewire::test(Opportunities\Create::class)
             ->set('form.title', $value)
