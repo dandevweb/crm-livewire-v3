@@ -2,10 +2,11 @@
 
     <x-header title="Opportunities" separator />
 
-    <div class="mb-4 flex items-end justify-between">
+    <div class="flex items-end justify-between mb-4">
         <div class="flex w-full gap-4">
             <div class="w-1/3">
-                <x-input label="Search by title" icon="o-magnifying-glass" wire:model.live="search" />
+                <x-input label="Search by title or Customer" icon="o-magnifying-glass"
+                    wire:model.live="search" />
             </div>
 
             <x-select wire:model.live="perPage" :options="[
@@ -50,7 +51,8 @@
         @endscope
 
         @scope('cell_amount', $item)
-            R$ {{ number_format($item->amount, 2, ',', '.') }}
+            <div class="text-right whitespace-nowrap">R$ {{ number_format($item->amount, 2, ',', '.') }}
+            </div>
         @endscope
 
         @scope('actions', $opportunity)

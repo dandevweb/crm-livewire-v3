@@ -2,12 +2,17 @@
 
 namespace Database\Seeders;
 
+use App\Models\{Customer, Opportunity};
 use Illuminate\Database\Seeder;
 
 class OpportunitySeeder extends Seeder
 {
     public function run(): void
     {
-        \App\Models\Opportunity::factory(300)->create();
+        for($i = 0; $i < 300; $i++) {
+            Opportunity::factory()->create([
+                'customer_id' => Customer::inRandomOrder()->first()->id,
+            ]);
+        }
     }
 }
