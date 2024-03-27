@@ -27,9 +27,10 @@ class Form extends BaseForm
     {
         $this->opportunity = $opportunity;
 
-        $this->title  = $opportunity->title;
-        $this->status = $opportunity->status;
-        $this->amount = $opportunity->amount ?? 0;
+        $this->customer_id = $opportunity->customer_id;
+        $this->title       = $opportunity->title;
+        $this->status      = $opportunity->status;
+        $this->amount      = $opportunity->amount ?? 0;
     }
 
     public function create(): void
@@ -50,8 +51,9 @@ class Form extends BaseForm
     {
         $this->validate();
 
-        $this->opportunity->title  = $this->title;
-        $this->opportunity->status = $this->status;
+        $this->opportunity->customer_id = $this->customer_id;
+        $this->opportunity->title       = $this->title;
+        $this->opportunity->status      = $this->status;
         /** @phpstan-ignore-next-line */
         $this->opportunity->amount = $this->amount ?? 0;
 

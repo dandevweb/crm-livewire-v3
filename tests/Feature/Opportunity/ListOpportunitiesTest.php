@@ -3,10 +3,10 @@
 
 use Livewire\Livewire;
 
-use App\Models\Opportunity;
+use App\Models\{Customer, Opportunity};
+use App\Livewire\Opportunities;
 
 use App\Models\{Permission, User};
-use App\Livewire\Opportunities;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -44,15 +44,17 @@ test('check the table format', function () {
         ->assertSet('headers', [
             ['key' => 'id', 'label' => '#', 'sortColumnBy' => 'id', 'sortDirection' => 'asc'],
             ['key' => 'title', 'label' => 'Title', 'sortColumnBy' => 'id', 'sortDirection' => 'asc'],
+            ['key' => 'customer_name', 'label' => 'Customer', 'sortColumnBy' => 'id', 'sortDirection' => 'asc'],
             ['key' => 'status', 'label' => 'Status', 'sortColumnBy' => 'id', 'sortDirection' => 'asc'],
             ['key' => 'amount', 'label' => 'Amount', 'sortColumnBy' => 'id', 'sortDirection' => 'asc'],
         ]);
 });
 
 it('should be able to filter by title', function () {
-    $user = User::factory()->create();
-    Opportunity::factory()->create(['title' => 'joe Doe']);
-    $mario = Opportunity::factory()->create(['title' => 'Mario']);
+    $user     = User::factory()->create();
+    $customer = Customer::factory()->create(['name' => 'Zack']);
+    Opportunity::factory()->create(['title' => 'joe Doe', 'customer_id' => $customer->id]);
+    $mario = Opportunity::factory()->create(['title' => 'Mario', 'customer_id' => $customer->id]);
 
     actingAs($user);
 
