@@ -3,15 +3,12 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Illuminate\View\View;
 
 class Welcome extends Component
 {
-    public function render()
+    public function render(): View
     {
-        return <<<'HTML'
-            <div>
-                <h1>Welcome to Livewire!</h1>
-            </div>
-            HTML;
+        return view('livewire.welcome');
     }
 }
