@@ -1,3 +1,3 @@
-<div class="bg-red-400 p-4">
-    Welcome
+<div class="h-screen p-2">
+    <livewire:opportunities.board />
 </div>

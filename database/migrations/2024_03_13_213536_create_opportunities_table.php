@@ -11,8 +11,9 @@ return new class () extends Migration {
             $table->id();
             $table->foreignId('customer_id')->constrained();
             $table->string('title');
-            $table->string('status')->default('open');
+            $table->string('status')->default('open')->index();
             $table->integer('amount');
+            $table->unsignedSmallInteger('sort_order')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
